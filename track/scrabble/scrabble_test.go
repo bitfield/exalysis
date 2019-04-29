@@ -16,10 +16,6 @@ var suggestTests = []struct {
 	suggestion gtpl.Template
 	expected   bool
 }{
-	{path: "./solutions/1", suggestion: tpl.Unicode, expected: true},
-	{path: "./solutions/3", suggestion: tpl.Unicode, expected: true},
-	{path: "./solutions/2", suggestion: tpl.UnicodeLoop, expected: true},
-	{path: "./solutions/3", suggestion: tpl.UnicodeLoop, expected: false},
 	{path: "./solutions/2", suggestion: tpl.MoveMap, expected: true},
 	{path: "./solutions/3", suggestion: tpl.MoveMap, expected: false},
 	{path: "./solutions/4", suggestion: tpl.MoveMap, expected: true},
@@ -28,8 +24,6 @@ var suggestTests = []struct {
 	{path: "./solutions/5", suggestion: tpl.FlattenMap, expected: true},
 	{path: "./solutions/5", suggestion: tpl.TrySwitch, expected: false},
 	{path: "./solutions/5", suggestion: tpl.TypeConversion, expected: false},
-	{path: "./solutions/6", suggestion: tpl.Unicode, expected: false},
-	{path: "./solutions/6", suggestion: tpl.UnicodeLoop, expected: false},
 	{path: "./solutions/6", suggestion: tpl.Regex, expected: true},
 	{path: "./solutions/6", suggestion: tpl.Challenge, expected: true},
 	{path: "./solutions/7", suggestion: tpl.FlattenMap, expected: false},

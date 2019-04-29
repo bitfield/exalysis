@@ -6,8 +6,6 @@ import "github.com/exercism/exalysis/gtpl"
 
 // Templates to be used in the response of suggester
 var (
-	Unicode         = gtpl.NewFormatTemplate("unicode.md", MustAsset)
-	UnicodeLoop     = gtpl.NewFormatTemplate("unicode-loop.md", MustAsset)
 	MapRune         = gtpl.NewFormatTemplate("maprune.md", MustAsset)
 	FlattenMap      = gtpl.NewFormatTemplate("flatten-map.md", MustAsset)
 	TypeConversion  = gtpl.NewStringTemplate("type-conversion.md", MustAsset)

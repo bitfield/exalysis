@@ -1,1 +1,0 @@
-- Where performance is important, think about using `unicode.%[1]s` inside the `for` loop instead of `strings.%[1]s` before the loop, because it's a little faster. Usually, however, readability is more important than performance, so what you have is just fine.

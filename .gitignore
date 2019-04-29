@@ -1,3 +1,4 @@
-/exalysis
-/cmd/exalysis/exalysis
 .vscode/spellright.dict
+/cmd/exalysis/exalysis
+/exalysis
+bindata.go

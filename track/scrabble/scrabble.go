@@ -12,8 +12,6 @@ import (
 
 // Suggest builds suggestions for the exercise solution
 func Suggest(pkg *astrav.Package, r *extypes.Response) {
-	addSpeedComment = getAddSpeedComment()
-
 	for _, tf := range exFuncs {
 		tf(pkg, r)
 	}
@@ -26,8 +24,6 @@ var exFuncs = []extypes.SuggestionFunc{
 	testFlattenMap,
 	testMapRuneInt,
 	testSliceRuneConv,
-	testToLowerUpper("strings.ToLower"),
-	testToLowerUpper("strings.ToUpper"),
 	testTrySwitch,
 	testIfElseToSwitch,
 	testRuneLoop,
@@ -62,29 +58,6 @@ func testRegex(pkg *astrav.Package, r *extypes.Response) {
 			r.AppendTodoTpl(tpl.Regex)
 			r.AppendCommentTpl(tpl.Challenge)
 			r.AppendOutro(gtpl.Regex)
-			addSpeedComment(r)
-		}
-	}
-}
-
-func testToLowerUpper(fnName string) extypes.SuggestionFunc {
-	return func(pkg *astrav.Package, r *extypes.Response) {
-		if r.HasSuggestion(tpl.Regex) {
-			return
-		}
-
-		fns := pkg.FindByName(fnName)
-		for _, fn := range fns {
-			if _, ok := fn.(*astrav.SelectorExpr); !ok {
-				continue
-			}
-			addSpeedComment(r)
-
-			if fn.NextParentByType(astrav.NodeTypeBlockStmt).IsContainedByType(astrav.NodeTypeRangeStmt) {
-				r.AppendImprovementTpl(tpl.UnicodeLoop.Format(fnName))
-			} else {
-				r.AppendImprovementTpl(tpl.Unicode.Format(fnName))
-			}
 		}
 	}
 }
@@ -94,7 +67,6 @@ func testFlattenMap(pkg *astrav.Package, r *extypes.Response) {
 	loopCount := len(entryFn.FindNodeTypeInCallTree(astrav.NodeTypeForStmt))
 	loopCount += len(entryFn.FindNodeTypeInCallTree(astrav.NodeTypeRangeStmt))
 	if 1 < loopCount {
-		addSpeedComment(r)
 		r.AppendImprovementTpl(tpl.FlattenMap)
 	}
 }
@@ -104,12 +76,10 @@ func testMapRuneInt(pkg *astrav.Package, r *extypes.Response) {
 		return
 	}
 	if len(pkg.FindByValueType("map[string]int")) != 0 {
-		addSpeedComment(r)
 		r.AppendImprovementTpl(tpl.MapRune.Format("map[string]int"))
 		return
 	}
 	if len(pkg.FindByValueType("map[int]string")) != 0 {
-		addSpeedComment(r)
 		r.AppendImprovementTpl(tpl.MapRune.Format("map[int]string"))
 		return
 	}
@@ -120,17 +90,14 @@ func testTrySwitch(pkg *astrav.Package, r *extypes.Response) {
 		return
 	}
 	if len(pkg.FindByValueType("map[rune]int")) != 0 {
-		addSpeedComment(r)
 		r.AppendCommentTpl(tpl.TrySwitch)
 		return
 	}
 	if len(pkg.FindByValueType("map[string]int")) != 0 {
-		addSpeedComment(r)
 		r.AppendCommentTpl(tpl.TrySwitch)
 		return
 	}
 	if len(pkg.FindByValueType("map[int]string")) != 0 {
-		addSpeedComment(r)
 		r.AppendCommentTpl(tpl.TrySwitch)
 		return
 	}
@@ -169,7 +136,6 @@ func testRuneLoop(pkg *astrav.Package, r *extypes.Response) {
 func testGoRoutine(pkg *astrav.Package, r *extypes.Response) {
 	goStmts := pkg.FindByNodeType(astrav.NodeTypeGoStmt)
 	if len(goStmts) != 0 {
-		addSpeedComment(r)
 		r.AppendTodoTpl(tpl.GoRoutines)
 	}
 }
@@ -196,20 +162,6 @@ func testMapInFunc(pkg *astrav.Package, r *extypes.Response) {
 		}
 	}
 	if hasMapDef {
-		addSpeedComment(r)
 		r.AppendTodoTpl(tpl.MoveMap)
-	}
-}
-
-var addSpeedComment func(r *extypes.Response)
-
-func getAddSpeedComment() func(r *extypes.Response) {
-	var speedCommentAdded bool
-	return func(r *extypes.Response) {
-		if speedCommentAdded {
-			return
-		}
-		speedCommentAdded = true
-		r.AppendOutro(gtpl.Benchmarking)
 	}
 }
