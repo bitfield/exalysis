@@ -17,7 +17,6 @@ func Suggest(pkg *astrav.Package, r *extypes.Response) {
 
 var exFuncs = []extypes.SuggestionFunc{
 	addConcurrencyNotFaster,
-	examAddOne,
 	examWaitGroup,
 	examBufferSizeLen,
 	examSelect,
@@ -40,19 +39,6 @@ func examWaitGroup(pkg *astrav.Package, r *extypes.Response) {
 	}
 	if len(wgs) != 0 && len(goTokens) == 1 {
 		r.AppendImprovementTpl(tpl.WaitGroupNotNeeded)
-	}
-}
-
-func examAddOne(pkg *astrav.Package, r *extypes.Response) {
-	nodes := pkg.FindByName("Add")
-	for _, node := range nodes {
-		bLit := node.NextParentByType(astrav.NodeTypeCallExpr).FindFirstByNodeType(astrav.NodeTypeBasicLit)
-		if bLit == nil {
-			continue
-		}
-		if bLit.(*astrav.BasicLit).Value == "1" {
-			r.AppendImprovementTpl(tpl.WaitGroupAddOne)
-		}
 	}
 }
 
