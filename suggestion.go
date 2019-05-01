@@ -142,6 +142,11 @@ func addTip(r *extypes.Response, pkgName string) {
 		r.AppendOutro(gtpl.Hints)
 		return
 	}
+	if pkgName == "account" {
+		// For the final core exercise, congratulate the student on graduating.
+		r.AppendOutro(gtpl.Congrats)
+		return
+	}
 	// For other exercises, give a randomly-selected tip.
 	if r.LenSuggestions() < 3 {
 		rand.Seed(time.Now().UnixNano())
